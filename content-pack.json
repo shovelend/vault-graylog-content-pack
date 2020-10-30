@@ -23,15 +23,15 @@
       },
       "static_fields": {},
       "type": "org.graylog2.inputs.raw.tcp.RawTCPInput",
-      "global": false,
+      "global": true,
       "extractors": [
         {
           "title": "Parse JSON",
-          "type": "JSON",
-          "cursor_strategy": "CUT",
+          "extractor_type": "json",
+          "cursor_strategy": "cut",
           "target_field": "",
           "source_field": "message",
-          "configuration": {
+          "extractor_config": {
             "list_separator": ", ",
             "kv_separator": "=",
             "key_prefix": "vault_",
@@ -40,17 +40,17 @@
             "key_whitespace_replacement": "_"
           },
           "converters": [],
-          "condition_type": "NONE",
+          "condition_type": "none",
           "condition_value": "",
           "order": 0
         },
         {
           "title": "Extracts the resource path",
-          "type": "REGEX",
+          "extractor_type": "regex",
           "cursor_strategy": "COPY",
           "target_field": "vault_path",
           "source_field": "vault_request_path",
-          "configuration": {
+          "extractor_config": {
             "regex_value": "^[^\\/]+[^\\/]+\\/(.*)"
           },
           "converters": [],
@@ -60,11 +60,11 @@
         },
         {
           "title": "Authentication Backend",
-          "type": "REGEX",
+          "extractor_type": "regex",
           "cursor_strategy": "COPY",
           "target_field": "vault_authentication_backend",
           "source_field": "vault_request_path",
-          "configuration": {
+          "extractor_config": {
             "regex_value": "^auth/([^\\/]+)"
           },
           "converters": [],
@@ -74,21 +74,20 @@
         },
         {
           "title": "Vault Secret Backend",
-          "type": "REGEX",
+          "extractor_type": "regex",
           "cursor_strategy": "COPY",
           "target_field": "vault_mount",
           "source_field": "vault_request_path",
-          "configuration": {
+          "extractor_config": {
             "regex_value": "^([^\\/]+)"
           },
           "converters": [],
-          "condition_type": "REGEX",
+          "condition_type": "regex",
           "condition_value": "^(?!sys|auth)",
           "order": 0
         }
       ]
-    }
-  ],
+    ,
   "streams": [
     {
       "id": "58c21bd7bd174c0428238a6c",
